@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity(), Communicator {
             Log.d(TAG, "onCreate: Back")
             supportFragmentManager.beginTransaction().replace(R.id.mainFragment, reposFragment)
                     .commit()
-            //
+            ///
         }
     }
 
