@@ -33,6 +33,7 @@ class ReposAdapter() : RecyclerView.Adapter<ReposAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.onBind(reposList[position])
         communicator.loadingOff()
+        communicator.backBtnOff()
         holder.itemView.favoriteBtn.setOnClickListener {
             Log.d(TAG, "onBindViewHolder: ${reposList[position].name}")
             repoFav = reposList[position].name
@@ -42,18 +43,14 @@ class ReposAdapter() : RecyclerView.Adapter<ReposAdapter.ViewHolder>() {
             val companyType = object : TypeToken<Owner>() {}.type
             val items: Owner = Gson().fromJson(jsonObj, companyType)
             communicator.getUser(items.login, items.avatar_url)
-
-
         }
-//        communicator.checkRepoFavorite(reposList[position].name)
 
+        //communicator.checkRepoFavorite(reposList[position].name)
 
     }
-
     override fun getItemCount(): Int {
         return reposList.size
     }
-
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val array = SparseBooleanArray()
         val reposName = itemView.repoName
@@ -77,12 +74,12 @@ class ReposAdapter() : RecyclerView.Adapter<ReposAdapter.ViewHolder>() {
                     .load(items.avatar_url)
                     .into(avatar)
 
+
             //imageText.text = repoList.favorite.toString()
             if (repoList.favorite) {
                 favBtn.setBackgroundResource(R.drawable.star_on)
             } else {
                 favBtn.setBackgroundResource(R.drawable.star_off)
-
             }
 
             itemView.setOnClickListener {

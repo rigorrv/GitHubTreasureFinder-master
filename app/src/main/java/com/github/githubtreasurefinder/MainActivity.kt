@@ -23,49 +23,54 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), Communicator {
     private lateinit var myViewModelOld: UsersViewModel
-    private lateinit var repoViewModel : ReposViewModel
-    private lateinit var favoriteViewModel : FavoriteViewModel
+    private lateinit var repoViewModel: ReposViewModel
+    private lateinit var favoriteViewModel: FavoriteViewModel
     val userFragment = UserFragment()
     val reposFragment = ReposFragment()
-    val TAG : String = "TAG"
+    val TAG: String = "TAG"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         supportFragmentManager.beginTransaction().add(R.id.mainFragment, reposFragment)
                 .commit()
-        getRepo("jon")
+        backBtn.setOnClickListener {
+            Log.d(TAG, "onCreate: Back")
+            supportFragmentManager.beginTransaction().replace(R.id.mainFragment, reposFragment)
+                    .commit()
+        }
     }
 
     override fun getUser(user: String, avatar: String) {
         supportFragmentManager.beginTransaction().replace(R.id.mainFragment, userFragment)
-            .addToBackStack(null)
-            .commit()
+                .addToBackStack(null)
+                .commit()
         myViewModelOld = ViewModelProvider(this).get(UsersViewModel::class.java)
         myViewModelOld.getUser(user)
-        var userObserver = Observer<UserInformation>{
-                userFragment.getUserList(it, user, avatar)
+        var userObserver = Observer<UserInformation> {
+            userFragment.getUserList(it, user, avatar)
         }
 
-        myViewModelOld.userLiveData.observe(this,userObserver)
+        myViewModelOld.userLiveData.observe(this, userObserver)
     }
-    override fun getRepo(repo : String){
+
+    override fun getRepo(repo: String) {
         repoViewModel = ViewModelProvider(this, ViewModelRepoFactory(this)).get(ReposViewModel::class.java)
         repoViewModel.getRepo(repo)
         favoriteViewModel = ViewModelProvider(this, FavoriteFactory(this)).get(FavoriteViewModel::class.java)
         favoriteViewModel.checkFavorite()
         favoriteViewModel.deletRepo()
         //loading network data
-        var repoObserver = Observer<List<Item>>{
-            for (item in it){
+        var repoObserver = Observer<List<Item>> {
+            for (item in it) {
                 favoriteViewModel.insertRepos(item)
                 favoriteViewModel.insertOwner(item.owner)
             }
         }
 
-        var favoritesObserver = Observer<List<ReposFavotire>>{
-            for (item in it){
-                var repoObserver = Observer<List<Item>>{
-                    for (itemRepo in it){
+        var favoritesObserver = Observer<List<ReposFavotire>> {
+            for (item in it) {
+                var repoObserver = Observer<List<Item>> {
+                    for (itemRepo in it) {
                         if (itemRepo.name == item.repo) {
                             favoriteViewModel.updateItem(true, item.repo)
                             //getRepos()
@@ -85,15 +90,13 @@ class MainActivity : AppCompatActivity(), Communicator {
 
     }
 
-    override fun getRepos(){
+    override fun getRepos() {
         Log.d(TAG, "getRepo: Searching")
         favoriteViewModel.checkItems()
-        var checkRepos = Observer<List<Item>>{
+        var checkRepos = Observer<List<Item>> {
             reposFragment.reposList(it)
         }
         favoriteViewModel.repoLiveData.observe(this, checkRepos)
-
-
 
 
     }
@@ -118,5 +121,14 @@ class MainActivity : AppCompatActivity(), Communicator {
 
     override fun loadingOff() {
         progressBar.visibility = View.GONE
+    }
+
+    override fun backBtnOn() {
+        backBtn.visibility = View.VISIBLE
+
+    }
+
+    override fun backBtnOff() {
+        backBtn.visibility = View.GONE
     }
 }

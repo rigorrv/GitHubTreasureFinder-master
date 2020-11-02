@@ -12,5 +12,7 @@ interface Communicator {
     fun hideImage()
     fun loadingON()
     fun loadingOff()
+    fun backBtnOn()
+    fun backBtnOff()
 
 }

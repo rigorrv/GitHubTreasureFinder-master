@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.repos_fragment.view.*
 import kotlinx.android.synthetic.main.users_fragment.*
 
 lateinit var communicator: Communicator
-class ReposFragment : Fragment(R.layout.repos_fragment) {
+class ReposFragment : Fragment() {
 
     lateinit var rootView : View
     val reposAdapter = ReposAdapter()
@@ -39,11 +39,11 @@ class ReposFragment : Fragment(R.layout.repos_fragment) {
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (s.length > 1)
+                if (s.length > 3)
                     {
                         communicator.getRepo(repoSearch.text.toString())
                     }
-                if (s.length >2){
+                if (s.length >=2){
                     communicator.hideImage()
                     communicator.loadingON()
                 }

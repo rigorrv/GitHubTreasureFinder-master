@@ -25,6 +25,7 @@ class UserAdapter(val userList : UserInformation) : RecyclerView.Adapter<UserAda
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.onBind(userList[position])
         communicator.loadingOff()
+        communicator.backBtnOn()
     }
 
     override fun getItemCount(): Int {
@@ -42,7 +43,7 @@ class UserAdapter(val userList : UserInformation) : RecyclerView.Adapter<UserAda
             if(userList.name == repoFav){
                 favoriteUser.setBackgroundResource(R.drawable.star_on)
             }else{
-                favoriteUser.setBackgroundResource(R.drawable.star_off)
+                favoriteUser.setBackgroundResource(R.drawable.star_off_alpha)
 
             }
 
