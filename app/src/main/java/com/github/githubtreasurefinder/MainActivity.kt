@@ -36,8 +36,9 @@ class MainActivity : AppCompatActivity(), Communicator {
         backBtn.setOnClickListener {
             Log.d(TAG, "onCreate: Back")
             supportFragmentManager.beginTransaction().replace(R.id.mainFragment, reposFragment)
+                    .addToBackStack(null)
                     .commit()
-            ///
+            //
         }
     }
 

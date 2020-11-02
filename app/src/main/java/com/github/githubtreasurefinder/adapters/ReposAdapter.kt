@@ -37,6 +37,7 @@ class ReposAdapter() : RecyclerView.Adapter<ReposAdapter.ViewHolder>() {
         holder.itemView.favoriteBtn.setOnClickListener {
             Log.d(TAG, "onBindViewHolder: ${reposList[position].name}")
             repoFav = reposList[position].name
+            communicator.loadingON()
             communicator.saveFavorites(reposList[position])
             holder.itemView.favoriteBtn.setBackgroundResource(R.drawable.star_on)
             val jsonObj = Gson().toJson(reposList[position].owner)
