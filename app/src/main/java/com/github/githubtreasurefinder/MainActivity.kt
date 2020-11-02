@@ -33,7 +33,6 @@ class MainActivity : AppCompatActivity(), Communicator {
         setContentView(R.layout.activity_main)
         supportFragmentManager.beginTransaction().add(R.id.mainFragment, reposFragment)
                 .commit()
-        //getRepo("jon")
     }
 
     override fun getUser(user: String, avatar: String) {
