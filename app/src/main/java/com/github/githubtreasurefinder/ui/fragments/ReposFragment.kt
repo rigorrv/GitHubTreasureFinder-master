@@ -43,7 +43,7 @@ class ReposFragment : Fragment(R.layout.repos_fragment) {
                     {
                         communicator.getRepo(repoSearch.text.toString())
                     }
-                if (s.length >=4){
+                if (s.length >=2){
                     communicator.hideImage()
                     communicator.loadingON()
                 }
